@@ -4,302 +4,249 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flávia & Phillipe - Convite de Casamento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Convite de Casamento</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f0ea;
+            font-family: 'Georgia', serif;
+            background: #fff8f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            flex-direction: column;
         }
 
-        .container {
+        .envelope-container {
             position: relative;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .envelope-img {
             width: 300px;
-            height: 400px;
-            perspective: 1000px;
-        }
-
-        .envelope {
-            width: 100%;
-            height: 100%;
-            background: url('img/envelope.png') no-repeat center/contain;
-            position: absolute;
-            transition: transform 1s ease;
+            max-width: 90vw;
+            cursor: pointer;
+            transition: transform 0.6s ease;
             z-index: 2;
-            animation: pulse 2s infinite;
         }
 
-        .envelope::after {
-            content: '📩 Abra aqui';
-            position: absolute;
-            bottom: 10px;
+        .carta {
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            color: #a0522d;
-            animation: float 2s infinite;
-        }
-
-        @media (max-width: 400px) {
-            .container {
-                width: 90vw;
-                height: auto;
-                margin: 0 auto;
-                /* centraliza horizontalmente */
-                padding: 0 15px;
-                /* espaço interno nas laterais */
-            }
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.03);
-            }
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(-50%, 0);
-            }
-
-            50% {
-                transform: translate(-50%, -5px);
-            }
-        }
-
-        .card {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: #fff8f3;
-            border: 2px solid #c4b09c;
-            padding: 20px;
-            border-radius: 12px;
-            transform: translateY(0);
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 30px 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
             opacity: 0;
-            transition: all 1s ease;
-            z-index: 1;
-
+            visibility: hidden;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 20;
+            text-align: center;
         }
 
-        .card.show {
-            transform: translateY(-420px);
-            opacity: 10;
+        .carta.ativa {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .casal-img {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
         .nomes {
-            font-family: 'Great Vibes', cursive;
-            font-size: 26px;
-            color: #8b3e2f;
-            text-align: center;
+            font-size: 24px;
+            font-family: 'Dancing Script', cursive;
+            color: #964B00;
             margin-bottom: 10px;
             white-space: nowrap;
             overflow: hidden;
             border-right: 2px solid;
             width: 0;
-            animation: typing 4s steps(20, end) forwards, blink 0.7s infinite step-end alternate;
+            animation: escrever 4s steps(30, end) forwards, blink 0.8s infinite;
         }
 
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-
+        @keyframes escrever {
             to {
                 width: 100%;
             }
         }
 
         @keyframes blink {
-            from {
+            50% {
                 border-color: transparent;
-            }
-
-            to {
-                border-color: #8b3e2f;
             }
         }
 
         .mensagem {
-            text-align: center;
-            font-size: 14px;
-            margin: 10px 0;
-            color: #4f4f4f;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 15px;
         }
 
-        .detalhes {
-            background: #eae0d5;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            text-align: center;
+        .dados {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
         }
 
         .botoes {
             display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
+            justify-content: center;
+            gap: 10px;
         }
 
         .botoes button {
-            background-color: #6b8e23;
-            color: white;
+            padding: 10px 14px;
             border: none;
-            padding: 10px;
             border-radius: 8px;
+            background-color: #556b2f;
+            color: white;
+            font-size: 14px;
             cursor: pointer;
-            flex: 1;
-            margin: 0 5px;
+            transition: background 0.3s ease;
         }
 
-        .pix-modal,
-        .local-modal {
+        .botoes button:hover {
+            background-color: #3e4f20;
+        }
+
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 10;
         }
 
-        .modal-content {
+        .modal-conteudo {
             background: white;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            position: relative;
+            max-width: 90%;
         }
 
-        .modal-content img {
-            max-width: 200px;
+        .modal-conteudo img {
+            width: 200px;
             margin-bottom: 10px;
         }
 
-        .modal-content .chave {
+        .modal-conteudo .pix-chave {
             font-size: 14px;
             margin: 10px 0;
+            word-break: break-all;
         }
 
-        .modal-content button.copy {
-            background: #a0522d;
+        .modal-conteudo button {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #964B00;
             color: white;
-            padding: 5px 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 18px;
+        .fechar {
+            margin-top: 10px;
+            color: #888;
             cursor: pointer;
-            color: #333;
+        }
+
+        @media(max-width: 600px) {
+            .carta.ativa {
+                transform: translate(-50%, -120%) scale(1);
+            }
         }
     </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <div class="envelope" onclick="abrirCarta()"></div>
-        <div class="card" id="carta">
-            <img src="img/ph.jpeg" class="casal-img" alt="Casal">
+
+    <div class="envelope-container">
+        <img src="img/envelopefc.png" alt="Envelope" class="envelope-img" id="envelope">
+        <div class="carta" id="carta">
+            <img src="img/ph.jpeg" alt="Casal" class="casal-img">
             <div class="nomes" id="nomes">Flávia & Phillipe</div>
-            <p class="mensagem">É com imensa alegria que convidamos você para fazer parte deste momento tão especial em
-                nossas vidas.</p>
-            <div class="detalhes">
-                <p><strong>Data:</strong> 27 de setembro</p>
-                <p><strong>Hora:</strong> 16:30</p>
-                <p><strong>Local:</strong> Espaço Verde Oliva</p>
+            <div class="mensagem">Com muito amor, convidamos você para celebrar nosso casamento.</div>
+            <div class="dados">
+                📅 27 de setembro às 16:30 <br>
+                📍 Chácara Encanto Verde
             </div>
             <div class="botoes">
-                <button onclick="abrirLocal()">📍 Localização</button>
-                <button onclick="abrirPix()">🎁 Presente Pix</button>
+                <button onclick="abrirModal('local')">Ver Localização</button>
+                <button onclick="abrirModal('pix')">Presente via Pix</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal PIX -->
-    <div class="pix-modal" id="pixModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharPix()">X</span>
-            <img src="img/qr.png" alt="QR Code Pix">
-            <p class="chave" id="chavePix">66996350742</p>
-            <button class="copy" onclick="copiarChave()">Copiar chave</button>
         </div>
     </div>
 
     <!-- Modal Local -->
-    <div class="local-modal" id="localModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharLocal()">X</span>
-            <p><a href="https://maps.app.goo.gl/AoFY1HDuGGVPrHDE9?g_st=ipc" target="_blank">Abrir no Google Maps</a></p>
+    <div class="modal" id="modal-local">
+        <div class="modal-conteudo">
+            <h3>Local da Cerimônia</h3>
+            <p>Chácara Encanto Verde - Sinop/MT</p>
+            <button onclick="window.open('https://maps.app.goo.gl/AoFY1HDuGGVPrHDE9?g_st=ipc', '_blank')">Abrir no Mapa</button>
+            <div class="fechar" onclick="fecharModal()">✖ Fechar</div>
         </div>
     </div>
 
-    <audio id="penSound" src="https://cdn.pixabay.com/audio/2022/03/01/audio_6d77c2a625.mp3"></audio>
+    <!-- Modal Pix -->
+    <div class="modal" id="modal-pix">
+        <div class="modal-conteudo">
+            <h3>Presente via Pix</h3>
+            <img src="img/qr.png" alt="QR Code Pix">
+            <div class="pix-chave" id="chave">66996350742</div>
+            <button onclick="copiarChave()">Copiar Chave</button>
+            <div class="fechar" onclick="fecharModal()">✖ Fechar</div>
+        </div>
+    </div>
+
+    <audio id="somCaneta"
+        src="https://cdn.pixabay.com/download/audio/2022/03/30/audio_97d6b1b1ac.mp3?filename=pen-on-paper-130390.mp3"></audio>
 
     <script>
-        function abrirCarta() {
-            const envelope = document.querySelector('.envelope');
-            const carta = document.getElementById('carta');
+        const envelope = document.getElementById('envelope');
+        const carta = document.getElementById('carta');
+        const nomes = document.getElementById('nomes');
+        const som = document.getElementById('somCaneta');
 
-            envelope.style.transition = 'all 1s ease';
-            envelope.style.transform = 'translateY(-150%)'; // Sobe e sai da tela
-            envelope.style.opacity = '0'; // Suma
+        envelope.addEventListener('click', () => {
+            envelope.src = 'img/envelopeab.png';
+            carta.classList.add('ativa');
+            som.play();
+        });
 
-            carta.style.zIndex = '10'; // Carta acima do envelope
-            carta.classList.add('show');
-            document.getElementById('penSound').play();
+        function abrirModal(tipo) {
+            document.getElementById('modal-' + tipo).style.display = 'flex';
         }
 
-
-        function abrirPix() {
-            document.getElementById('pixModal').style.display = 'flex';
-        }
-
-        function fecharPix() {
-            document.getElementById('pixModal').style.display = 'none';
-        }
-
-        function abrirLocal() {
-            document.getElementById('localModal').style.display = 'flex';
-        }
-
-        function fecharLocal() {
-            document.getElementById('localModal').style.display = 'none';
+        function fecharModal() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
         }
 
         function copiarChave() {
-            const chave = document.getElementById('chavePix').innerText;
-            navigator.clipboard.writeText(chave);
-            alert('Chave Pix copiada!');
+            const chave = document.getElementById('chave').textContent;
+            navigator.clipboard.writeText(chave).then(() => {
+                alert('Chave Pix copiada!');
+            });
         }
     </script>
+
 </body>
 
 </html>
