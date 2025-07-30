@@ -4,136 +4,161 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Convite de Casamento</title>
+    <title>Convite Flávia & Phillipe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            padding: 0;
             margin: 0;
-            font-family: 'Georgia', serif;
-            background: #fff8f0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fef9f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        .envelope-container {
+            height: 100vh;
+            overflow: hidden;
             position: relative;
+            perspective: 1000px;
+            /* para o 3D do envelope */
+        }
+
+        .container {
             text-align: center;
-            margin-top: 20px;
-        }
-
-        .envelope-img {
-            width: 300px;
-            max-width: 90vw;
-            cursor: pointer;
-            transition: transform 0.6s ease;
-            z-index: 2;
-        }
-
-        .carta {
-            position: fixed;
-            inset: 0;
-            margin: auto;
-            background: #fff;
-            padding: 30px 20px;
-            width: 90%;
+            position: relative;
             max-width: 400px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 20px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 20;
-            text-align: center;
-            display: flex;
+            width: 100%;
+        }
+
+        /* Envelope */
+        .envelope {
+            width: 100%;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: bottom center;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animação ao abrir */
+        .envelope.aberto {
+            transform: rotateX(-75deg) translateY(40px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .envelope img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            backface-visibility: hidden;
+        }
+
+        /* Carta (convite) */
+        .carta {
+            display: none;
             flex-direction: column;
-            justify-content: center;
-            height: max-content;
-            max-height: 90vh;
-            overflow-y: auto;
+            align-items: center;
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 10;
         }
 
         .carta.ativa {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-        }
-
-        .casal-img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .nomes {
-            font-size: 24px;
-            font-family: 'Dancing Script', cursive;
-            color: #964B00;
-            margin-bottom: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 2px solid;
-            width: 0;
-            animation: escrever 4s steps(30, end) forwards, blink 0.8s infinite;
-        }
-
-        @keyframes escrever {
-            to {
-                width: 100%;
-            }
-        }
-
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        .mensagem {
-            font-size: 16px;
-            color: #444;
-            margin-bottom: 15px;
-        }
-
-        .dados {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .botoes {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            animation: aparecer 0.6s ease forwards;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .foto-casal {
+            width: 180px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        /* Nome com efeito 3D e animação de "levitar" */
+        h1.nome {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #c97f63;
+            text-shadow:
+                2px 2px 3px rgba(85, 107, 47, 0.7),
+                -2px -2px 3px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            cursor: default;
+        }
+
+        h1.nome:hover {
+            transform: translateY(-8px) scale(1.05);
+            text-shadow:
+                4px 4px 6px rgba(85, 107, 47, 0.9),
+                -4px -4px 6px rgba(255, 255, 255, 1);
+        }
+
+        .mensagem,
+        .info {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #556b2f;
         }
 
         .botoes button {
-            padding: 10px 14px;
+            margin: 8px;
+            padding: 10px 15px;
+            background-color: #c97f63;
             border: none;
-            border-radius: 8px;
-            background-color: #556b2f;
             color: white;
-            font-size: 14px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
 
         .botoes button:hover {
-            background-color: #3e4f20;
+            background-color: #a66952;
         }
 
         .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
-            z-index: 10;
+            z-index: 20;
+        }
+
+        .modal.ativo {
+            display: flex;
         }
 
         .modal-conteudo {
@@ -142,111 +167,124 @@
             border-radius: 10px;
             text-align: center;
             max-width: 90%;
+            width: 300px;
+            position: relative;
         }
 
         .modal-conteudo img {
-            width: 200px;
+            width: 100%;
+            border-radius: 8px;
             margin-bottom: 10px;
         }
 
-        .modal-conteudo .pix-chave {
-            font-size: 14px;
-            margin: 10px 0;
-            word-break: break-all;
+        .fechar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
         }
 
-        .modal-conteudo button {
-            margin-top: 8px;
+        .pix-chave {
+            font-weight: bold;
+            margin: 10px 0;
+            color: #556b2f;
+            word-break: break-word;
+        }
+
+        .copiar-btn {
             padding: 8px 12px;
-            background: #964B00;
+            background-color: #a26f5a;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .fechar {
-            margin-top: 10px;
-            color: #888;
-            cursor: pointer;
+        .copiar-btn:hover {
+            background-color: #8c5f4c;
         }
 
-        @media(max-width: 600px) {
-            .carta.ativa {
-                transform: translate(-50%, -120%) scale(1);
+        @media (max-width: 480px) {
+            .carta {
+                width: 90%;
+            }
+
+            h1.nome {
+                font-size: 28px;
             }
         }
     </style>
-
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="envelope-container">
-        <img src="img/envelopefc.png" alt="Envelope" class="envelope-img" id="envelope">
+    <div class="container">
+        <div class="envelope" id="envelope" onclick="abrirConvite()">
+            <img id="img-envelope" src="img/envelopefc.png" alt="Envelope">
+        </div>
+
         <div class="carta" id="carta">
-            <img src="img/ph.jpeg" alt="Casal" class="casal-img">
-            <div class="nomes" id="nomes">Flávia & Phillipe</div>
-            <div class="mensagem">Com muito amor, convidamos você para celebrar nosso casamento.</div>
-            <div class="dados">
-                📅 27 de setembro às 16:30 <br>
-                📍 Chácara Encanto Verde
-            </div>
+            <img src="img/ph.jpeg" alt="Casal" class="foto-casal" />
+            <h1 class="nome">Flávia & Phillipe</h1>
+            <p class="mensagem">Com muito amor, convidamos você para fazer parte deste momento tão especial em nossas
+                vidas.</p>
+            <p class="info">📍 27 de Setembro às 16:30<br>Local: Chácara Gambá</p>
             <div class="botoes">
-                <button onclick="abrirModal('local')">Ver Localização</button>
+                <button onclick="abrirModal('local')">Localização</button>
                 <button onclick="abrirModal('pix')">Presente via Pix</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Local -->
+    <!-- Modal Localização -->
     <div class="modal" id="modal-local">
         <div class="modal-conteudo">
-            <h3>Local da Cerimônia</h3>
-            <p>Chácara Encanto Verde - Sinop/MT</p>
-            <button onclick="window.open('https://maps.app.goo.gl/AoFY1HDuGGVPrHDE9?g_st=ipc', '_blank')">Abrir no
-                Mapa</button>
-            <div class="fechar" onclick="fecharModal()">✖ Fechar</div>
+            <span class="fechar" onclick="fecharModal('local')">×</span>
+            <img src="img/mapa.png" alt="Mapa" />
+            <p>Endereço: Rua Exemplo, 123 - Jardim das Oliveiras</p>
         </div>
     </div>
 
     <!-- Modal Pix -->
     <div class="modal" id="modal-pix">
         <div class="modal-conteudo">
-            <h3>Presente via Pix</h3>
-            <img src="img/qr.png" alt="QR Code Pix">
-            <div class="pix-chave" id="chave">66996350742</div>
-            <button onclick="copiarChave()">Copiar Chave</button>
-            <div class="fechar" onclick="fecharModal()">✖ Fechar</div>
+            <span class="fechar" onclick="fecharModal('pix')">×</span>
+            <img src="img/qr.png" alt="QR Code Pix" />
+            <p class="pix-chave" id="pixChave">flavia.phillipe@pix.com.br</p>
+            <button class="copiar-btn" onclick="copiarPix()">Copiar Chave Pix</button>
         </div>
     </div>
 
-    <audio id="somCaneta"
-        src="https://cdn.pixabay.com/download/audio/2022/03/30/audio_97d6b1b1ac.mp3?filename=pen-on-paper-130390.mp3"></audio>
+    <audio id="somCaneta" src="https://cdn.pixabay.com/audio/2022/10/11/audio_2d86f24050.mp3"></audio>
 
     <script>
-        const envelope = document.getElementById('envelope');
-        const carta = document.getElementById('carta');
-        const nomes = document.getElementById('nomes');
-        const som = document.getElementById('somCaneta');
+        function abrirConvite() {
+            const envelope = document.getElementById('envelope');
+            const envelopeImg = document.getElementById('img-envelope');
+            const carta = document.getElementById('carta');
+            const audio = document.getElementById('somCaneta');
 
-        envelope.addEventListener('click', () => {
-            envelope.src = 'img/envelopeab.png';
-            carta.classList.add('ativa');
-            som.play();
-        });
+            envelope.classList.add('aberto'); // ativa a animação 3D do envelope
+            envelopeImg.src = "img/envelopeab.png"; // troca a imagem para aberta
+            carta.classList.add('ativa'); // mostra o convite
+            audio.play();
+        }
 
         function abrirModal(tipo) {
-            document.getElementById('modal-' + tipo).style.display = 'flex';
+            document.getElementById(`modal-${tipo}`).classList.add('ativo');
         }
 
-        function fecharModal() {
-            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        function fecharModal(tipo) {
+            document.getElementById(`modal-${tipo}`).classList.remove('ativo');
         }
 
-        function copiarChave() {
-            const chave = document.getElementById('chave').textContent;
+        function copiarPix() {
+            const chave = document.getElementById('pixChave').innerText;
             navigator.clipboard.writeText(chave).then(() => {
                 alert('Chave Pix copiada!');
             });
