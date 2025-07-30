@@ -14,17 +14,25 @@
             background-color: #fef9f5;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            /* Permite rolagem */
         }
+
+
 
         .container {
             text-align: center;
             max-width: 400px;
             width: 100%;
-            margin: 30px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 40px 20px;
+            margin: 0 auto;
+            position: relative;
         }
+
 
         .envelope {
             cursor: pointer;
@@ -62,21 +70,32 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            position: absolute;
+            width: 100%;
+            max-width: 350px;
+            max-height: 90vh;
+            /* Limita altura da carta */
+            overflow-y: auto;
+            /* Permite rolar o conteúdo da carta */
+            position: fixed;
+            /* Agora fixa centralmente */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 350px;
-            z-index: 10;
+            z-index: 2;
             flex-direction: column;
             align-items: center;
+            opacity: 0;
+            transition: all 0.8s ease;
         }
+
+
 
         .carta.ativa {
             display: flex;
-            animation: fadeIn 1s ease;
+            opacity: 1;
+            animation: desamassar 2.2s ease forwards;
         }
+
 
         @keyframes fadeIn {
             from {
@@ -89,6 +108,24 @@
                 transform: translate(-50%, -50%);
             }
         }
+
+        @keyframes desamassar {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8) rotateX(90deg);
+                opacity: 0;
+            }
+
+            60% {
+                transform: translate(-50%, -50%) scale(1.03) rotateX(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+
 
         .foto-casal {
             width: 180px;
