@@ -2,88 +2,76 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convite Flávia & Phillipe</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
-
         body {
             font-family: Arial, sans-serif;
             background-color: #fef9f5;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            position: relative;
-            perspective: 1000px;
-            /* para o 3D do envelope */
         }
 
         .container {
             text-align: center;
-            position: relative;
             max-width: 400px;
             width: 100%;
+            position: relative;
         }
 
-        /* Envelope */
         .envelope {
-            width: 100%;
             cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: bottom center;
+            position: relative;
             margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Animação ao abrir */
-        .envelope.aberto {
-            transform: rotateX(-75deg) translateY(40px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
         }
 
         .envelope img {
             width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            backface-visibility: hidden;
+            border-radius: 10px;
         }
 
-        /* Carta (convite) */
+        .texto-abrir {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #924e3e;
+        }
+
         .carta {
             display: none;
-            flex-direction: column;
-            align-items: center;
-            background-color: white;
-            border-radius: 12px;
+            background: white;
             padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 350px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
             z-index: 10;
+            flex-direction: column;
+            align-items: center;
         }
 
         .carta.ativa {
             display: flex;
-            animation: aparecer 0.6s ease forwards;
+            animation: fadeIn 1s ease;
         }
 
-        @keyframes aparecer {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translate(-50%, -60%);
@@ -99,34 +87,42 @@
             width: 180px;
             border-radius: 12px;
             margin-bottom: 15px;
-            object-fit: cover;
         }
 
-        /* Nome com efeito 3D e animação de "levitar" */
         h1.nome {
             font-family: 'Dancing Script', cursive;
             font-size: 36px;
             margin-bottom: 10px;
             color: #c97f63;
-            text-shadow:
-                2px 2px 3px rgba(85, 107, 47, 0.7),
-                -2px -2px 3px rgba(255, 255, 255, 0.8);
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
-            cursor: default;
         }
 
-        h1.nome:hover {
-            transform: translateY(-8px) scale(1.05);
-            text-shadow:
-                4px 4px 6px rgba(85, 107, 47, 0.9),
-                -4px -4px 6px rgba(255, 255, 255, 1);
+        .frase-abertura {
+            font-style: italic;
+            color: #924e3e;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+
+        .divisor {
+            border: none;
+            border-top: 1px dashed #c97f63;
+            margin: 15px 0;
+            width: 80%;
         }
 
         .mensagem,
-        .info {
-            font-size: 16px;
-            margin: 10px 0;
+        .info,
+        .mensagem-final {
+            font-size: 0.95em;
             color: #556b2f;
+            margin: 8px 0;
+        }
+
+        .detalhes-evento {
+            background: #f3efea;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         .botoes button {
@@ -137,7 +133,7 @@
             color: white;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s;
         }
 
         .botoes button:hover {
@@ -145,152 +141,133 @@
         }
 
         .modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
             justify-content: center;
             align-items: center;
-            z-index: 20;
+            z-index: 100;
         }
 
         .modal.ativo {
             display: flex;
         }
 
-        .modal-conteudo {
+        .modal-content {
             background: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
             max-width: 90%;
-            width: 300px;
-            position: relative;
         }
 
-        .modal-conteudo img {
-            width: 100%;
-            border-radius: 8px;
+        .modal-content img {
+            max-width: 100%;
             margin-bottom: 10px;
-        }
-
-        .fechar {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            color: #666;
-            cursor: pointer;
-            user-select: none;
-            font-weight: bold;
+            border-radius: 8px;
         }
 
         .pix-chave {
-            font-weight: bold;
+            word-break: break-all;
             margin: 10px 0;
-            color: #556b2f;
-            word-break: break-word;
+            font-size: 0.9em;
         }
 
         .copiar-btn {
-            padding: 8px 12px;
-            background-color: #a26f5a;
+            background: #c97f63;
             color: white;
             border: none;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .copiar-btn:hover {
-            background-color: #8c5f4c;
-        }
-
-        @media (max-width: 480px) {
-            .carta {
-                width: 90%;
-            }
-
-            h1.nome {
-                font-size: 28px;
-            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
         <div class="envelope" id="envelope" onclick="abrirConvite()">
-            <img id="img-envelope" src="img/envelopefc.png" alt="Envelope">
+            <img id="img-envelope" src="img/envelopefc.png" alt="Envelope Fechado">
+            <div class="texto-abrir" id="textoAbrir">Abra aqui</div>
         </div>
 
         <div class="carta" id="carta">
             <img src="img/ph.jpeg" alt="Casal" class="foto-casal" />
             <h1 class="nome">Flávia & Phillipe</h1>
-            <p class="mensagem">Com muito amor, convidamos você para fazer parte deste momento tão especial em nossas
-                vidas.</p>
-            <p class="info">📍 27 de Setembro às 16:30<br>Local: Chácara Gambá</p>
+            <p class="frase-abertura">"O amor é paciente, o amor é bondoso... e hoje ele celebra o nosso sim!"</p>
+            <hr class="divisor" />
+            <p class="mensagem">
+                Com o coração cheio de alegria, convidamos você para celebrar conosco este capítulo tão especial da
+                nossa história.
+            </p>
+            <div class="detalhes-evento">
+                <p><strong>🗕️ Data:</strong> 27 de Setembro de 2025</p>
+                <p><strong>⏰ Horário:</strong> 16:30</p>
+                <p><strong>📍 Local:</strong> Chácara Gambá</p>
+            </div>
+            <hr class="divisor" />
+            <p class="mensagem-final">
+                Sua presença tornará esse dia ainda mais inesquecível para nós!
+            </p>
             <div class="botoes">
-                <button onclick="abrirModal('local')">Localização</button>
+                <button onclick="abrirModal('local')">Ver Localização</button>
                 <button onclick="abrirModal('pix')">Presente via Pix</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Localização -->
     <div class="modal" id="modal-local">
-        <div class="modal-conteudo">
-            <span class="fechar" onclick="fecharModal('local')">×</span>
-            <img src="img/mapa.png" alt="Mapa" />
-            <p>Endereço: Rua Exemplo, 123 - Jardim das Oliveiras</p>
+        <div class="modal-content">
+            <p style="font-size: 1.2em; color: #924e3e;"><strong>📍 Endereço:</strong> Rancho do Gambá</p>
+            <a href="https://maps.app.goo.gl/AoFY1HDuGGVPrHDE9?g_st=ipc" target="_blank"
+                style="display: inline-block; margin-top: 10px; background: #c97f63; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">
+                Abrir no Google Maps
+            </a>
+            <br><br>
+            <button onclick="fecharModal('local')" style="margin-top: 10px;">Fechar</button>
         </div>
     </div>
 
-    <!-- Modal Pix -->
+
     <div class="modal" id="modal-pix">
-        <div class="modal-conteudo">
-            <span class="fechar" onclick="fecharModal('pix')">×</span>
-            <img src="img/qr.png" alt="QR Code Pix" />
-            <p class="pix-chave" id="pixChave">flavia.phillipe@pix.com.br</p>
+        <div class="modal-content">
+            <img src="img/qr.png" alt="QR Code Pix">
+            <p class="pix-chave" id="pixChave">66996350742</p>
             <button class="copiar-btn" onclick="copiarPix()">Copiar Chave Pix</button>
+            <br>
+            <button onclick="fecharModal('pix')">Fechar</button>
         </div>
     </div>
-
-    <audio id="somCaneta" src="https://cdn.pixabay.com/audio/2022/10/11/audio_2d86f24050.mp3"></audio>
 
     <script>
         function abrirConvite() {
-            const envelope = document.getElementById('envelope');
-            const envelopeImg = document.getElementById('img-envelope');
-            const carta = document.getElementById('carta');
-            const audio = document.getElementById('somCaneta');
-
-            envelope.classList.add('aberto'); // ativa a animação 3D do envelope
-            envelopeImg.src = "img/envelopeab.png"; // troca a imagem para aberta
-            carta.classList.add('ativa'); // mostra o convite
-            audio.play();
+            const envelope = document.getElementById("envelope");
+            const carta = document.getElementById("carta");
+            const texto = document.getElementById("textoAbrir");
+            envelope.classList.add("aberto");
+            carta.classList.add("ativa");
+            texto.style.display = "none";
         }
 
         function abrirModal(tipo) {
-            document.getElementById(`modal-${tipo}`).classList.add('ativo');
+            document.getElementById(`modal-${tipo}`).classList.add("ativo");
         }
 
         function fecharModal(tipo) {
-            document.getElementById(`modal-${tipo}`).classList.remove('ativo');
+            document.getElementById(`modal-${tipo}`).classList.remove("ativo");
         }
 
         function copiarPix() {
-            const chave = document.getElementById('pixChave').innerText;
+            const chave = document.getElementById("pixChave").innerText;
             navigator.clipboard.writeText(chave).then(() => {
-                alert('Chave Pix copiada!');
+                alert("Chave Pix copiada!");
             });
         }
     </script>
-
 </body>
 
 </html>
