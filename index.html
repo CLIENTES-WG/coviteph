@@ -19,10 +19,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
-            /* Permite rolagem */
         }
-
-
 
         .container {
             text-align: center;
@@ -32,7 +29,6 @@
             margin: 0 auto;
             position: relative;
         }
-
 
         .envelope {
             cursor: pointer;
@@ -63,7 +59,6 @@
             color: #4f4f4f;
         }
 
-
         .carta {
             display: none;
             background: white;
@@ -73,11 +68,8 @@
             width: 100%;
             max-width: 350px;
             max-height: 90vh;
-            /* Limita altura da carta */
             overflow-y: auto;
-            /* Permite rolar o conteúdo da carta */
             position: fixed;
-            /* Agora fixa centralmente */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -88,25 +80,10 @@
             transition: all 0.8s ease;
         }
 
-
-
         .carta.ativa {
             display: flex;
             opacity: 1;
             animation: desamassar 2.2s ease forwards;
-        }
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
         }
 
         @keyframes desamassar {
@@ -124,8 +101,6 @@
                 transform: translate(-50%, -50%) scale(1);
             }
         }
-
-
 
         .foto-casal {
             width: 180px;
@@ -209,24 +184,73 @@
             max-width: 90%;
         }
 
-        .modal-content img {
-            max-width: 100%;
-            margin-bottom: 10px;
-            border-radius: 8px;
-        }
-
         .pix-chave {
             word-break: break-all;
             margin: 10px 0;
             font-size: 0.9em;
         }
 
-        .copiar-btn {
+        /* Modal Confirmar Presença */
+        #modal-confirmar .modal-content {
+            max-width: 400px;
+            width: 90%;
+            background: #fff8f3;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        #modal-confirmar h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        #modal-confirmar .nome-input {
+            width: 90%;
+            padding: 10px;
+            margin: 6px auto;
+            display: block;
+            border: 1px solid #c97f63;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        #modal-confirmar .nome-input:focus {
+            border-color: #a66952;
+            box-shadow: 0 0 6px rgba(201, 127, 99, 0.4);
+        }
+
+        #modal-confirmar .btn-add {
             background: #c97f63;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #modal-confirmar .btn-confirm {
+            background: #4CAF50;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 10px 20px;
             border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        #modal-confirmar .btn-fechar {
+            background: #ccc;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
             cursor: pointer;
         }
     </style>
@@ -250,64 +274,66 @@
             </p>
             <div class="detalhes-evento">
                 <p class="endereco"><strong>📍 Rancho Gambá</strong></p>
-                <div class="linha-evento">
-                    <div class="evento-coluna">
-                        <span class="icone">📅</span>
-                        <span class="texto">27 de Setembro</span>
-                    </div>
-                    <div class="divisor-vertical"></div>
-                    <div class="evento-coluna">
-                        <span class="icone">⏰</span>
-                        <span class="texto">às 16h30</span>
-                    </div>
-                </div>
+                <p>📅 27 de Setembro | ⏰ 16h30</p>
             </div>
-
-
-
-
-            <hr class="divisor" />
             <p class="mensagem-final">
                 Sua presença tornará esse dia ainda mais inesquecível para nós!
             </p>
             <div class="botoes">
                 <button onclick="abrirModal('local')">Ver Localização</button>
                 <button onclick="abrirModal('pix')">Presente via Pix</button>
+                <button onclick="abrirModal('confirmar')">Confirmar Presença</button>
             </div>
+            <p style="margin-top: 15px; color: #a66952; font-weight: bold;">
+                Obs: Levem suas garrafas de tereré para compartilhar bons momentos com a gente!
+            </p>
         </div>
     </div>
 
+    <!-- Modal Localização -->
     <div class="modal" id="modal-local">
         <div class="modal-content">
             <p style="font-size: 1.2em; color: #924e3e;"><strong>📍 Endereço:</strong> Rancho do Gambá</p>
             <a href="https://maps.app.goo.gl/AoFY1HDuGGVPrHDE9?g_st=ipc" target="_blank"
-                style="display: inline-block; margin-top: 10px; background: #c97f63; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">
+                style="display:inline-block;margin-top:10px;background:#c97f63;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;">
                 Abrir no Google Maps
             </a>
             <br><br>
-            <button onclick="fecharModal('local')" style="margin-top: 10px;">Fechar</button>
+            <button onclick="fecharModal('local')">Fechar</button>
         </div>
     </div>
 
-
+    <!-- Modal Pix -->
     <div class="modal" id="modal-pix">
         <div class="modal-content">
             <img src="img/qr.png" alt="QR Code Pix">
             <p class="pix-chave" id="pixChave">66996350742</p>
-            <button class="copiar-btn" onclick="copiarPix()">Copiar Chave Pix</button>
+            <button onclick="copiarPix()">Copiar Chave Pix</button>
             <br>
             <button onclick="fecharModal('pix')">Fechar</button>
         </div>
     </div>
 
+    <!-- Modal Confirmar Presença -->
+    <div class="modal" id="modal-confirmar">
+        <div class="modal-content">
+            <h3>Confirme sua presença</h3>
+            <p>Adicione seu nome:</p>
+            <div id="nomes-container">
+                <input type="text" placeholder="Seu nome" class="nome-input" />
+            </div>
+            <button class="btn-add" onclick="adicionarCampo()">+</button>
+            <br>
+            <button class="btn-confirm" onclick="enviarWhatsApp()">Confirmar</button>
+            <br>
+            <button class="btn-fechar" onclick="fecharModal('confirmar')">Fechar</button>
+        </div>
+    </div>
+
     <script>
         function abrirConvite() {
-            const envelope = document.getElementById("envelope");
-            const carta = document.getElementById("carta");
-            const texto = document.getElementById("textoAbrir");
-            envelope.classList.add("aberto");
-            carta.classList.add("ativa");
-            texto.style.display = "none";
+            document.getElementById("carta").classList.add("ativa");
+            document.getElementById("textoAbrir").style.display = "none";
         }
 
         function abrirModal(tipo) {
@@ -320,9 +346,30 @@
 
         function copiarPix() {
             const chave = document.getElementById("pixChave").innerText;
-            navigator.clipboard.writeText(chave).then(() => {
-                alert("Chave Pix copiada!");
-            });
+            navigator.clipboard.writeText(chave).then(() => alert("Chave Pix copiada!"));
+        }
+
+        let maxPessoas = 6;
+
+        function adicionarCampo() {
+            const container = document.getElementById("nomes-container");
+            if (container.querySelectorAll(".nome-input").length < maxPessoas) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.placeholder = "Nome adicional";
+                input.classList.add("nome-input");
+                container.appendChild(input);
+            } else {
+                alert("Limite de 6 pessoas atingido!");
+            }
+        }
+
+        function enviarWhatsApp() {
+            const inputs = document.querySelectorAll(".nome-input");
+            const nomes = [...inputs].map(i => i.value.trim()).filter(n => n !== "");
+            if (nomes.length === 0) return alert("Adicione pelo menos um nome!");
+            const mensagem = `Confirmação de presença:%0A${nomes.join("%0A")}`;
+            window.open(`https://wa.me/5565998171148?text=${mensagem}`, "_blank");
         }
     </script>
 </body>
