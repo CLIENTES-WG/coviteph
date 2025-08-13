@@ -144,7 +144,8 @@
             margin-bottom: 15px;
         }
 
-        .botoes button {
+        .botoes button,
+        .botoes a {
             margin: 8px;
             padding: 10px 15px;
             background-color: #c97f63;
@@ -153,9 +154,12 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .botoes button:hover {
+        .botoes button:hover,
+        .botoes a:hover {
             background-color: #a66952;
         }
 
@@ -182,61 +186,6 @@
             border-radius: 12px;
             text-align: center;
             max-width: 90%;
-        }
-
-        /* Modal Pix responsivo */
-        #modal-pix .modal-content {
-            max-width: 350px;
-            width: 90%;
-            background: #fff8f3;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        #modal-pix img {
-            max-width: 200px;
-            /* Reduz tamanho no mobile */
-            width: 100%;
-            height: auto;
-            margin-bottom: 12px;
-            border-radius: 10px;
-        }
-
-        #modal-pix button {
-            margin-top: 8px;
-            background: #c97f63;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        #modal-pix button:hover {
-            background: #a66952;
-        }
-
-        /* Ajuste para telas muito pequenas */
-        @media (max-width: 480px) {
-            #modal-pix .modal-content {
-                max-width: 90%;
-                padding: 12px;
-            }
-
-            #modal-pix img {
-                max-width: 160px;
-                /* Ainda menor no mobile */
-            }
-        }
-
-
-        .pix-chave {
-            word-break: break-all;
-            margin: 10px 0;
-            font-size: 0.9em;
         }
 
         /* Modal Confirmar Presença */
@@ -330,7 +279,8 @@
             </p>
             <div class="botoes">
                 <button onclick="abrirModal('local')">Ver Localização</button>
-                <button onclick="abrirModal('pix')">Presente via Pix</button>
+                <a href="https://lista.havan.com.br/Convidado/ItensListaPresente/855472" target="_blank">Lista de
+                    Presentes</a>
                 <button onclick="abrirModal('confirmar')">Confirmar Presença</button>
             </div>
             <p style="margin-top: 15px; color: #a66952; font-weight: bold;">
@@ -349,17 +299,6 @@
             </a>
             <br><br>
             <button onclick="fecharModal('local')">Fechar</button>
-        </div>
-    </div>
-
-    <!-- Modal Pix -->
-    <div class="modal" id="modal-pix">
-        <div class="modal-content">
-            <img src="img/qr.png" alt="QR Code Pix">
-            <p class="pix-chave" id="pixChave">66996350742</p>
-            <button onclick="copiarPix()">Copiar Chave Pix</button>
-            <br>
-            <button onclick="fecharModal('pix')">Fechar</button>
         </div>
     </div>
 
@@ -391,11 +330,6 @@
 
         function fecharModal(tipo) {
             document.getElementById(`modal-${tipo}`).classList.remove("ativo");
-        }
-
-        function copiarPix() {
-            const chave = document.getElementById("pixChave").innerText;
-            navigator.clipboard.writeText(chave).then(() => alert("Chave Pix copiada!"));
         }
 
         let maxPessoas = 6;
